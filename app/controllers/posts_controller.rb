@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   def index
-
+    @posts = Post.all
   end
 
   def new
@@ -10,10 +10,11 @@ class PostsController < ApplicationController
   def create
     post = Post.new(post_params)
     post.save!
-    redirect_to posts_url, notice: "投稿が完了しました。"
+    redirect_to post, notice: "投稿が完了しました。"
   end
 
   def show
+    @post = Post.find(params[:id])
   end
 
   def edit

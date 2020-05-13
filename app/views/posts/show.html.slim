@@ -1,2 +1,6 @@
-h1 Posts#show
-p Find me in app/views/posts/show.html.slim
+= link_to '投稿一覧', root_path, class: 'nav-link'
+
+p= @post.title
+p= simple_format(h(@post.description), {}, sanitize: false, wrapper_tag: "div")
+p= simple_format(h(@post.content), {}, sanitize: false, wrapper_tag: "div")
+p= @post.updated_at
