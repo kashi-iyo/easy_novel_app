@@ -7,10 +7,15 @@ class PostsController < ApplicationController
     @post = Post.new
   end
 
+# @postインスタンス変数は、エラーメッセージの表示に使う。
   def create
-    post = Post.new(post_params)
-    post.save!
-    redirect_to post, notice: "投稿が完了しました。"
+    @post = Post.new(post_params)
+
+    if @post.save
+      redirect_to @post, notice: "投稿が完了しました。"
+    else
+      render :new
+    end
   end
 
   def show

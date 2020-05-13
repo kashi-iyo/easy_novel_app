@@ -1,11 +1,13 @@
+= render partial: 'errors', locals: { post: @post }
+
 = form_with model: post, local: true do |f|
   .form-group
-    = f.label :title
-    = f.text_field :title, class: 'form-control'
+    / = f.label :title
+    = f.text_field :title, placeholder: "タイトル", class: 'form-control'
   .form-group
-    = f.label :description
-    = f.text_area :description, rows: 5, class: 'form-control'
+    / = f.label :description
+    = f.text_area :description, rows: 5,placeholder: "あらすじ", class: 'form-control'
   .form-group
-    = f.label :content
-    = f.text_area :content, rows: 30, class: 'form-control'
+    / = f.label :content
+    = f.text_area :content, rows: 30,placeholder: "本文", class: 'form-control'
   = f.submit nil, class: 'btn'

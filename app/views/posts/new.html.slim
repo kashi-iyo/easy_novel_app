@@ -1,6 +1,6 @@
 h1 新規登録
 
-= link_to '投稿一覧', root_path, class: 'nav-link'
+p= link_to '投稿一覧', root_path, class: 'nav-link'
 
 / localsオプションでパーシャル内のローカル変数を設定
 = render partial: 'form', locals: { post: @post }
