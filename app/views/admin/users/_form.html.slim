@@ -1,0 +1,17 @@
+- if user.errors.present?
+  - user.errors.full_messages.each do |messaage|
+    = message
+
+= form_with model: [:admin, user], local: true do |f|
+  .form-group
+    = f.text_field :name, placeholder: "名前", class: 'form-control'
+  .form-group
+    = f.text_field :email, placeholder: "メールアドレス",class: 'form-control'
+  .form-check
+    = f.check_box :admin, class: 'form-check-input'
+    | 管理者権限
+  .form-group
+    = f.password_field :password, placeholder: "パスワード", class: 'form-control'
+  .form-group
+    = f.password_field :password_confirmation, placeholder: "確認用パスワード",class: 'form-control'
+  = f.submit '登録する', class: 'btn'

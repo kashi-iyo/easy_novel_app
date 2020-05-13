@@ -1,0 +1,13 @@
+h1 ユーザープロフ
+
+= link_to '一覧', admin_users_path, class: 'btn'
+
+p= @user.name
+p= @user.email
+p= @user.admin? ? 'あり', 'なし'
+p= @user.created_at
+p= @user.updated_at
+
+p= link_to '編集', edit_admin_user_path, class: 'btn'
+p= link_to '削除', [:admin, @user], method: :delete,
+    data: { confirm: "ユーザーを削除します。よろしいですか？" }, class: 'btn'
