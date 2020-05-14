@@ -11,6 +11,7 @@
 ・gem 'slim-rails'<br>
 ・gem 'html2slim'<br>
 ・gem 'rails-i18n', '~> 5.1'
+・gem 'rinku'
 <h2>内容</h2>
 <h3>文章投稿アプリケーション</h3>
 <h4>投稿系</h4>
