@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
 
     if user&.authenticate(sessions_params[:password]) #ぼっち演算子を付与してnilを返すようにする。
       session[:user_id] = user.id
-      redirect_to root_url, notice: 'ログインしました。'
+      redirect_to posts_url, notice: 'ログインしました。'
     else
       render :new
     end
@@ -23,6 +23,6 @@ class SessionsController < ApplicationController
 
   private
     def sessions_params
-      params.require(:user).permit(:email, :password)
+      params.require(:sessions).permit(:email, :password)
     end
 end
