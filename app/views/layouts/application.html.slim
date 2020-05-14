@@ -9,7 +9,14 @@ html
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   body
-  .container
-    - if flash.notice.present?
-      .alert.alert-success= flash.notice
-    = yield
+    ul
+      - if current_user
+        li= link_to '投稿一覧', posts_path, class: 'nav-link'
+        li= link_to 'ユーザー一覧', users_path, class: 'nav-link'
+        li= link_to 'ログアウト', logout_path, method: :delete, class: 'nav-link'
+      - else
+        li= link_to 'ログイン', login_path, class: 'nav-link'
+    .container
+      - if flash.notice.present?
+        .alert.alert-success= flash.notice
+      = yield
