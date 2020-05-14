@@ -1,8 +1,9 @@
 class PostsController < ApplicationController
   skip_before_action :login_required, only: [:index]
+  before_action :set_post, only: [:show, :edit, :update, :destroy]
 
   def index
-    @posts = current_user.posts
+    @posts = current_user.posts.order(created_at: :desc)
   end
 
   def new
@@ -21,22 +22,18 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post = current_user.posts.find(params[:id])
   end
 
   def edit
-    @post = current_user.posts.find(params[:id])
   end
 
   def update
-    post = current_user.posts.find(params[:id])
-    post.update!(post_params)
+    @post.update!(post_params)
     redirect_to post, notice: "投稿を更新しました。"
   end
 
   def destroy
-    post = current_user.posts.find(params[:id])
-    post.destroy
+    @post.destroy
     redirect_to posts_path, notice: "投稿を削除しました。"
   end
 
@@ -44,5 +41,9 @@ class PostsController < ApplicationController
 
     def post_params
       params.require(:post).permit(:title, :description, :content)
+    end
+
+    def set_post
+      @post = current_user.posts.find(params[:id])
     end
 end
