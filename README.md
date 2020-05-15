@@ -8,10 +8,9 @@
 ・postgreSQL：12.2<br>
 <br>
 <h2>gemファイル</h2>
-・gem 'slim-rails'<br>
-・gem 'html2slim'<br>
-・gem 'rails-i18n', '~> 5.1'
-・gem 'rinku'
+  gem 'slim-rails'／gem 'html2slim'／gem 'rails-i18n', '~> 5.1'／gem 'rinku'<br>
+  gem 'pg', '>= 0.18', '< 2.0'／gem 'rspec-rails', '~> 3.7'／gem 'factory_bot_rails', '~> 4.11'<br>
+  gem 'capybara', '>= 2.15'／gem 'selenium-webdriver'
 <h2>内容</h2>
 <h3>文章投稿アプリケーション</h3>
 <h4>投稿系</h4>
