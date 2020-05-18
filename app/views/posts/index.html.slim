@@ -4,9 +4,12 @@ h1 投稿一覧
 = search_form_for @q, class: 'form-wrapper' do |f|
   .form-group.row
     = f.search_field :title_cont, placeholder: 'キーワード', class: 'form-control'
+  .form-group.row
+    = f.search_field :created_at_gteq, placeholder: '登録日時', class: 'form-control'
   .form-group
     = f.submit class: 'btn'
 
-/ - @posts.each do |post|
-/   p= link_to post.title, post, class: 'post-title'
-/   / p= post.description
+
+- @posts.each do |post|
+  p= link_to post.title, post, class: 'post-title'
+  / p= post.description
