@@ -7,6 +7,8 @@
     = f.text_field :name, placeholder: "名前", class: 'form-control'
   .form-group
     = f.text_field :email, placeholder: "メールアドレス",class: 'form-control'
+  .form-group
+    = f.file_field :image, placeholder: 'プロフィール画像', class: 'form-control'
   .form-check
     = f.check_box :admin, class: 'form-check-input'
     | 管理者権限

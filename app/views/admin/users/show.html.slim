@@ -2,9 +2,10 @@ h1 ユーザープロフ
 
 = link_to '一覧', admin_users_path, class: 'btn'
 
+p= image_tag @user.image if @user.image.attached?
 p= @user.name
 p= @user.email
-p= @user.admin? ? 'あり', 'なし'
+p= @user.admin? ? 'あり' : 'なし'
 p= @user.created_at
 p= @user.updated_at
 
