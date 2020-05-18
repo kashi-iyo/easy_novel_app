@@ -21,6 +21,7 @@ class PostsController < ApplicationController
     @post = current_user.posts.new(post_params)
 
     if @post.save
+      PostMailer.creation_email(@post).deliver_now
       redirect_to @post, notice: "投稿が完了しました。"
     else
       render :new

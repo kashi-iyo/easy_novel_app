@@ -1,0 +1,12 @@
+| 以下の投稿を作成しました
+
+ul
+  li
+    | タイトル:
+    = @post.title
+  li
+    | あらすじ:
+    = simple_format(@post.description)
+  li
+    | 本文:
+    = simple_format(@post.content)
