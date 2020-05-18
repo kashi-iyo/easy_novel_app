@@ -9,6 +9,8 @@ h1 投稿一覧
   .form-group
     = f.submit class: 'btn'
 
+.form-group.row
+  = sort_link(@q, :title, default_order: :desc)
 
 - @posts.each do |post|
   p= link_to post.title, post, class: 'post-title'
