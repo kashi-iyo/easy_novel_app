@@ -2,9 +2,15 @@ class PostsController < ApplicationController
   skip_before_action :login_required, only: [:index]
   before_action :set_post, only: [:show, :edit, :update, :destroy]
 
+
   def index
-    @posts = Post.all.order(created_at: :desc)
+    @q = Post.all.ransack(params[:q])
+    @posts = @q.result(distinct: true).recent
   end
+  # def index
+  #   @posts = Post.all.order(created_at: :desc)
+  #
+  # end
 
   def new
     @post = Post.new
