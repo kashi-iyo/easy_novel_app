@@ -5,7 +5,7 @@ class PostsController < ApplicationController
 
   def index
     @q = Post.all.ransack(params[:q])
-    @posts = @q.result(distinct: true)
+    @posts = @q.result(distinct: true).page(params[:page]).per(30)
 
     respond_to do |format|
       format.html # HTMLとしてアクセスされた場合に実行される。
