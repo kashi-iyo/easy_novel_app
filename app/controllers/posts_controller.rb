@@ -6,6 +6,15 @@ class PostsController < ApplicationController
   def index
     @q = Post.all.ransack(params[:q])
     @posts = @q.result(distinct: true)
+
+    respond_to do |format|
+      format.html # HTMLとしてアクセスされた場合に実行される。
+      format.csv { send_data @posts.generate_csv,
+                   filename: "post-#{Time.zone.now.strftime('%Y%m%d%S')}.csv" }
+                   # CSVとしてアクセスされた場合に実行される。
+                   # send_dataメソッドを使って、レスポンスを送り出し
+                   # 送り出したデータをファイルとしてダウンロードできるようにする。
+    end
   end
   # def index
   #   @posts = Post.all.order(created_at: :desc)
@@ -29,6 +38,14 @@ class PostsController < ApplicationController
   end
 
   def show
+    respond_to do |format|
+      format.html # HTMLとしてアクセスされた場合に実行される。
+      format.csv { send_data Post.where(id: params[:id]).generate_csv,
+                   filename: "post-#{Time.zone.now.strftime('%Y%m%d%S')}.csv" }
+                   # CSVとしてアクセスされた場合に実行される。
+                   # send_dataメソッドを使って、レスポンスを送り出し
+                   # 送り出したデータをファイルとしてダウンロードできるようにする。
+    end
   end
 
   def edit
