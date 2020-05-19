@@ -17,3 +17,7 @@ h1 投稿一覧
   / p= post.description
 
 = link_to 'エクスポート', posts_path(format: :csv), class: 'btn'
+
+= form_tag import_posts_path, multipart: true, class: 'form-control' do
+  = file_field_tag :file
+  = submit_tag "インポート", class: 'btn'

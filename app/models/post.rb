@@ -33,4 +33,12 @@ class Post < ApplicationRecord
       end
     end
   end
+
+  def self.import(file)
+    CSV.foreach(file.path, headers: true) do |row|
+      post = new
+      post.attributes = row.to_hash.slice(*csv_attributes)
+      post.save!
+    end
+  end
 end

@@ -39,13 +39,19 @@ class PostsController < ApplicationController
 
   def show
     respond_to do |format|
-      format.html # HTMLとしてアクセスされた場合に実行される。
+      # HTMLとしてアクセスされた場合に実行される。
+      format.html
+      # CSVとしてアクセスされた場合に実行される。
+      # send_dataメソッドを使って、レスポンスを送り出し
+      # 送り出したデータをファイルとしてダウンロードできるようにする。
       format.csv { send_data Post.where(id: params[:id]).generate_csv,
                    filename: "post-#{Time.zone.now.strftime('%Y%m%d%S')}.csv" }
-                   # CSVとしてアクセスされた場合に実行される。
-                   # send_dataメソッドを使って、レスポンスを送り出し
-                   # 送り出したデータをファイルとしてダウンロードできるようにする。
     end
+  end
+
+  def import
+    current_user.posts.import(params[:file])
+    redirect_to post_url, notice: "投稿を追加しました"
   end
 
   def edit
