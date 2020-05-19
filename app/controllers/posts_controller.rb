@@ -1,11 +1,11 @@
 class PostsController < ApplicationController
   skip_before_action :login_required, only: [:index]
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :set_post, only: [:edit, :update, :destroy]
 
 
   def index
     @q = Post.all.ransack(params[:q])
-    @posts = @q.result(distinct: true).page(params[:page]).per(30)
+    @posts = @q.result(distinct: true).page(params[:page]).per(50)
 
     respond_to do |format|
       format.html # HTMLとしてアクセスされた場合に実行される。
@@ -38,6 +38,7 @@ class PostsController < ApplicationController
   end
 
   def show
+    @post = Post.find(params[:id])
     respond_to do |format|
       # HTMLとしてアクセスされた場合に実行される。
       format.html
