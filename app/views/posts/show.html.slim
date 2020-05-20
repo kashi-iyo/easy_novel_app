@@ -5,6 +5,6 @@ p= raw Rinku.auto_link(simple_format(h(@post.description), {}, sanitize: false, 
 p= simple_format(h(@post.content), {}, sanitize: false, wrapper_tag: "div")
 p= @post.updated_at
 p= link_to '編集', edit_post_path, class: 'btn'
-p= link_to '削除', @post, method: :delete, data: { confirm: "投稿を削除します。よろしいですか？" }, class: 'btn'
+p= link_to '削除', @post, method: :delete, remote: true, data: { confirm: "投稿を削除します。よろしいですか？" }, class: 'btn delete'
 
 p= link_to 'エクスポート', post_path(format: :csv), class: 'btn'
