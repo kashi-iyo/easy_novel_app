@@ -1,5 +1,5 @@
 class Admin::UsersController < ApplicationController
-  before_action :require_admin
+  before_action :require_admin, except: [:new, :create]
 
   def new
     @user = User.new
