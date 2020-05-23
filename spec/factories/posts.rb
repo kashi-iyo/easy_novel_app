@@ -1,8 +1,9 @@
 FactoryBot.define do
   factory :post do
-    title { 'タイトル' }
+    sequence(:title) { |n| "タイトル #{n}" }
     description { 'あらすじ' }
     content { '本文' }
     user
+
   end
 end
