@@ -2,7 +2,10 @@ require 'rails_helper'
 
 describe '投稿管理機能', type: :system do
   let(:user_a) { FactoryBot.create(:user, name: 'ユーザーA', email: 'a@example.com') }
-  let!(:post_a) { FactoryBot.create(:post, title: '最初の投稿', user: user_a) }
+  let!(:post_a) { FactoryBot.create(:post, title: '最初の投稿',
+                                    description: "あらすじ", content: "本文", user: user_a
+                                    )
+                }
 
   before do
     visit login_path
@@ -40,26 +43,30 @@ describe '投稿管理機能', type: :system do
 
     before do
       visit new_post_path
-      fill_in 'タイトル', with: post_title
+      fill_in 'タイトル', with: post.title
+      fill_in 'あらすじ', with: post.description
+      fill_in '本文', with: post.content
       click_button '登録する'
     end
 
-    context '新規投稿画面でタイトルを入力した時' do
-      let(:post_title) { '新規投稿のテストを書く' }
-
-      it '正常に登録される' do
-        expect(page).to have_selector '.alert-success', text: '投稿が完了しました'
-      end
-    end
-
-    context '新規投稿画面でタイトルを入力しなかった時' do
-      let(:post_title) { '' }
-
-      it 'エラーとなる' do
-        within '#error_explanation' do
-          expect(page).to have_content 'タイトルを入力してください'
-        end
-      end
-    end
+    # context '新規投稿画面でタイトルを入力した時' do
+    #   let(:post) { post_a }
+    #   # let(:post_title, :post_description, :post_content )
+    #   # { '新規投稿のテストを書く', 'あらすじ', '' }
+    #
+    #   it '正常に登録される' do
+    #     expect(page).to have_selector '.alert-success', text: '投稿が完了しました'
+    #   end
+    # end
+    #
+    # context '新規投稿画面でタイトルを入力しなかった時' do
+    #   let(:post) { '' }
+    #
+    #   it 'エラーとなる' do
+    #     within '#error_explanation' do
+    #       expect(page).to have_content 'タイトルを入力してください'
+    #     end
+    #   end
+    # end
   end
 end
