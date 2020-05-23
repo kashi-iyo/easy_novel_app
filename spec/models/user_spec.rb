@@ -1,9 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  let(:user_valid) { FactoryBot.create(:user, name: 'Tanaka',
-                     email: 'user@example.com',password_digest: 'password')
-                   }
+  let(:user_valid) { FactoryBot.create(:user,
+                      name: 'Tanaka',
+                      email: 'user@example.com',
+                      password_digest: 'password'
+                      )
+                    }
 
   it "名前、メールアドレス、パスワードがあれば有効である" do
     expect(user_valid).to be_valid
