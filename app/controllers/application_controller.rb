@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
     end
 
     def authenticate_user
-      if @current_user == nil
+      if current_user == nil
         redirect_to posts_path
       end
     end

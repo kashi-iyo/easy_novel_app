@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   skip_before_action :login_required, only: [:index]
-  before_action :authenticate_user, only: [:edit, :update, :destroy]
+  before_action :authenticate_user, only: [:new, :show, :edit, :update, :destroy]
   before_action :ensure_correct_user, only: [:edit, :update, :destroy]
   before_action :set_post, only: [:edit, :update, :destroy]
 
@@ -83,6 +83,6 @@ class PostsController < ApplicationController
 
     def ensure_correct_user
       @post = Post.find(params[:id])
-      redirect_to posts_path if current_user.id != @post.user_id 
+      redirect_to posts_path if current_user.id != @post.user_id
     end
 end
