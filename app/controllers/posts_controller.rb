@@ -1,7 +1,8 @@
 class PostsController < ApplicationController
   skip_before_action :login_required, only: [:index]
+  before_action :authenticate_user, only: [:edit, :update, :destroy]
+  before_action :ensure_correct_user, only: [:edit, :update, :destroy]
   before_action :set_post, only: [:edit, :update, :destroy]
-
 
   def index
     @q = Post.all.ransack(params[:q])
@@ -56,11 +57,12 @@ class PostsController < ApplicationController
   end
 
   def edit
+    @post =  Post.find(params[:id])
   end
 
   def update
     @post.update!(post_params)
-    redirect_to post, notice: "投稿を更新しました。"
+    redirect_to @post, notice: "投稿を更新しました。"
   end
 
   def destroy
@@ -76,6 +78,11 @@ class PostsController < ApplicationController
     end
 
     def set_post
-      @post = current_user.posts.find(params[:id])
+      @post = current_user.posts.find_by(id: params[:id])
+    end
+
+    def ensure_correct_user
+      @post = Post.find(params[:id])
+      redirect_to posts_path if current_user.id != @post.user_id 
     end
 end
