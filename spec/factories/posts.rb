@@ -5,5 +5,9 @@ FactoryBot.define do
     content { '本文' }
     user
 
+    trait :invalid do
+      title { nil }
+    end
+
   end
 end

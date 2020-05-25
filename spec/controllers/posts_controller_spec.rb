@@ -27,6 +27,7 @@ RSpec.describe PostsController, type: :controller do
     let(:other_user) { FactoryBot.create(:user) } #他のユーザーでのログイン
     let(:post_a) { FactoryBot.create(:post) } #投稿を作成
     let(:post_params) { FactoryBot.attributes_for(:post) } #投稿のハッシュを作成
+    let(:invalid_post) { FactoryBot.attributes_for(:post, :invalid) } #無効な投稿
 
 
     describe "#new" do
@@ -78,11 +79,24 @@ RSpec.describe PostsController, type: :controller do
     describe "#create" do
 
       context "ログイン済みユーザーの場合" do
-        it "投稿を作成する" do
-          login_user
-          expect {
-            post :create, params: { post: post_params }
-          }.to change(user.posts, :count).by(1)
+
+        context "有効な属性値が入力された場合" do
+          it "投稿が正常に作成できること" do
+            login_user
+            expect {
+              post :create, params: { post: post_params }
+            }.to change(user.posts, :count).by(1)
+          end
+        end
+
+        context "無効な属性値が入力された場合" do
+          it "投稿が正常に作成できないこと" do
+            invalid_post #無効な投稿を作成
+            login_user
+            expect {
+              post :create, params: { post: invalid_post }
+            }.to_not change(user.posts, :count)
+          end
         end
       end
 
@@ -96,12 +110,11 @@ RSpec.describe PostsController, type: :controller do
           expect(response).to redirect_to login_url
         end
       end
-
     end
 
-    let(:users_post) { FactoryBot.create(:post, user: user) }
-    let(:update_params) { FactoryBot.attributes_for(:post, title: "更新後のタイトル") }
-    let(:other_users_post) { FactoryBot.create(:post, title: "更新前のタイトル", user: other_user,) }
+    let(:users_post) { FactoryBot.create(:post, user: user) } #ログインユーザーに所有されている投稿
+    let(:update_params) { FactoryBot.attributes_for(:post, title: "更新後のタイトル") } #更新用の投稿を作成
+    let(:other_users_post) { FactoryBot.create(:post, title: "更新前のタイトル", user: other_user,) } #他人に所有されている投稿を作成
 
     describe "#update" do
 
