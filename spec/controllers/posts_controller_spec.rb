@@ -23,10 +23,11 @@ RSpec.describe PostsController, type: :controller do
 
   context "ログインを必要とするアクション" do
 
-    let(:login_user) { login(user) }
-    let(:other_user) { FactoryBot.create(:user) }
-    let(:post_a) { FactoryBot.create(:post) }
-    let(:post_params) { FactoryBot.attributes_for(:post) }
+    let(:login_user) { login(user) } #ログイン
+    let(:other_user) { FactoryBot.create(:user) } #他のユーザーでのログイン
+    let(:post_a) { FactoryBot.create(:post) } #投稿を作成
+    let(:post_params) { FactoryBot.attributes_for(:post) } #投稿のハッシュを作成
+
 
     describe "#new" do
 
@@ -98,11 +99,11 @@ RSpec.describe PostsController, type: :controller do
 
     end
 
-    describe "#update" do
+    let(:users_post) { FactoryBot.create(:post, user: user) }
+    let(:update_params) { FactoryBot.attributes_for(:post, title: "更新後のタイトル") }
+    let(:other_users_post) { FactoryBot.create(:post, title: "更新前のタイトル", user: other_user,) }
 
-      let(:users_post) { FactoryBot.create(:post, user: user) }
-      let(:update_params) { FactoryBot.attributes_for(:post, title: "更新後のタイトル") }
-      let(:other_users_post) { FactoryBot.create(:post, title: "更新前のタイトル", user: other_user,) }
+    describe "#update" do
 
       context "認可されたユーザーの場合" do
         it "投稿を更新できること" do
@@ -111,16 +112,76 @@ RSpec.describe PostsController, type: :controller do
           expect(users_post.reload.title).to eq "更新後のタイトル"
         end
       end
+
       context "認可されていないユーザーの場合" do
         it "投稿を更新できないこと" do
           login_user
           patch :update, params: { id: other_users_post.id, post: update_params }
           expect(other_users_post.reload.title).to eq "更新前のタイトル"
         end
-        it "投稿編集ページへリダイレクトされること" do
+        it "投稿一覧ページへリダイレクトされること" do
           login_user
           patch :update, params: { id: other_users_post.id, post: update_params }
           expect(response).to redirect_to posts_path
+        end
+      end
+
+      context "ゲストの場合" do
+        it "302レスポンスを返すこと" do
+          patch :update, params: { id: users_post.id, post: update_params }
+          expect(response).to have_http_status "302"
+        end
+        it "ログイン画面へリダイレクトされること" do
+          patch :update, params: { id: users_post.id, post: update_params }
+          expect(response).to redirect_to login_url
+        end
+      end
+    end
+
+    describe "#destroy" do
+
+      context "認可されたユーザーの場合" do
+        it "投稿を削除できること" do
+          users_post #ログインユーザーの投稿を作成
+          login_user #ログインシミュレート
+          expect {
+            delete :destroy, params: { id: users_post.id }
+          }.to change(user.posts, :count).by(-1)
+        end
+      end
+
+      context "認可されていないユーザーの場合" do
+        before do
+          other_users_post #他人の投稿を作成
+          login_user #ログインシミュレート
+        end
+        it "投稿が削除できないこと" do
+          expect {
+            delete :destroy, params: { id: other_users_post.id }
+          }.to_not change(Post, :count)
+        end
+        it "投稿一覧画面へリダイレクトされること" do
+          delete :destroy, params: { id: other_users_post.id }
+          expect(response).to redirect_to posts_path
+        end
+      end
+
+      context "ゲストの場合" do
+        before do
+          post_a
+        end
+        it "302レスポンスを返すこと" do
+          delete :destroy, params: { id: post_a.id }
+          expect(response).to have_http_status "302"
+        end
+        it "ログイン画面へリダイレクトされること" do
+          delete :destroy, params: { id: post_a.id }
+          expect(response).to redirect_to login_url
+        end
+        it "投稿を削除できないこと" do
+          expect {
+            delete :destroy, params: { id: post_a.id }
+          }.to_not change(Post, :count)
         end
       end
     end

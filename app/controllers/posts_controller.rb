@@ -67,8 +67,8 @@ class PostsController < ApplicationController
 
   def destroy
     @post.destroy
-    head :no_content  #レスポンスボディなしでHTTPステータスとして204を返す。
-    # redirect_to posts_path, notice: "投稿を削除しました。"
+    # head :no_content  #レスポンスボディなしでHTTPステータスとして204を返す。
+    redirect_to posts_path, notice: "投稿を削除しました。"
   end
 
   private
