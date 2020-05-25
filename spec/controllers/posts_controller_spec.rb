@@ -100,19 +100,15 @@ RSpec.describe PostsController, type: :controller do
 
     describe "#update" do
 
+      let(:users_post) { FactoryBot.create(:post, user: user) }
       let(:update_params) { FactoryBot.attributes_for(:post, title: "更新後のタイトル") }
       let(:other_users_post) { FactoryBot.create(:post, title: "更新前のタイトル", user: other_user,) }
 
       context "認可されたユーザーの場合" do
-        before do
-          @user = FactoryBot.create(:user)
-          @post = FactoryBot.create(:post, user: @user)
-        end
         it "投稿を更新できること" do
-          new_params = FactoryBot.attributes_for(:post, title: "更新後のタイトル")
-          login @user
-          patch :update, params: { id: @post.id, post: new_params }
-          expect(@post.reload.title).to eq "更新後のタイトル"
+          login_user
+          patch :update, params: { id: users_post.id, post: update_params }
+          expect(users_post.reload.title).to eq "更新後のタイトル"
         end
       end
       context "認可されていないユーザーの場合" do
