@@ -3,5 +3,13 @@ FactoryBot.define do
       name { 'テストユーザー' }
       sequence(:email) { |n| "test#{n}@example.com" }
       password { 'password' }
+
+      trait :invalid_email do
+        email { nil }
+      end
+
+      trait :invalid_pass do
+        password { nil }
+      end
     end
   end

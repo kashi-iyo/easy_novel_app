@@ -1,12 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  let(:user_valid) { FactoryBot.create(:user,
-                      name: 'Tanaka',
-                      email: 'user@example.com',
-                      password_digest: 'password'
-                      )
-                    }
+  let(:user_valid) { FactoryBot.create(:user) }
 
   describe "ユーザーバリデーション" do
     context "バリデーションが有効な場合" do

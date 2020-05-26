@@ -24,4 +24,6 @@ RSpec.feature "Posts", type: :feature do
       expect(page).to have_content "新規投稿のテスト"
     }.to change(user_a.posts, :count).by(1)
   end
+
+  
 end
