@@ -2,13 +2,13 @@ require 'rails_helper'
 
 RSpec.describe Post, type: :model do
 
+  let(:post_a) { FactoryBot.create(:post) }
+
   describe "Userモデルのバリデーション" do
 
     context "バリデーションが有効である場合" do
       it "タイトル、あらすじ、本文が入力されていれば有効である" do
-        user = FactoryBot.create(:user)
-        post = FactoryBot.create(:post, user: user)
-        expect(post).to be_valid
+        expect(post_a).to be_valid
       end
 
       it "タイトルが30文字ちょうどなら有効である" do
@@ -26,16 +26,16 @@ RSpec.describe Post, type: :model do
 
     context "バリデーションが無効である場合" do
       it "タイトルが存在しなければ無効である" do
-        notitle_post = FactoryBot.build(:post, title: "")
+        notitle_post = FactoryBot.build(:post, :invalid_title)
         notitle_post.valid?
         expect(notitle_post.errors[:title]).to include("を入力してください")
       end
 
       it "タイトルが重複した場合は無効である" do
-        post_valid
-        new_post = FactoryBot.build(:post, title: "タイトル")
-        new_post.valid?
-        expect(new_post.errors[:title]).to include("はすでに存在します")
+        post_a
+        invalid_post = FactoryBot.build(:post, title: post_a.title)
+        invalid_post.valid?
+        expect(invalid_post.errors[:title]).to include("はすでに存在します")
       end
 
       it "タイトルが30文字以上ならば無効である" do
