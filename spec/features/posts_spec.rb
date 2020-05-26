@@ -5,12 +5,8 @@ RSpec.feature "Posts", type: :feature do
   scenario "ユーザーが新規投稿する" do
 
     user_a = FactoryBot.create(:user)
+    login_as user_a
 
-    visit root_path
-    click_link "ログイン"
-    fill_in "メールアドレス", with: user_a.email
-    fill_in "パスワード", with: user_a.password
-    click_button "ログイン"
 
     expect {
       click_link "新規投稿"
@@ -25,5 +21,5 @@ RSpec.feature "Posts", type: :feature do
     }.to change(user_a.posts, :count).by(1)
   end
 
-  
+
 end
