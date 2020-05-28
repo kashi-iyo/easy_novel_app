@@ -2,8 +2,6 @@ require 'rails_helper'
 
 RSpec.describe PostsController, type: :controller do
 
-  let(:user) { FactoryBot.create(:user) }
-
   context "ログインを必要としないアクション" do
 
     describe "#index" do
@@ -16,18 +14,16 @@ RSpec.describe PostsController, type: :controller do
         get :index
         expect(response).to have_http_status "200"
       end
-
     end
-
   end
 
   context "ログインを必要とするアクション" do
 
+    let(:user) { FactoryBot.create(:user) }
     let(:login_user) { login(user) } #ログイン
-    let(:other_user) { FactoryBot.create(:user) } #他のユーザーでのログイン
     let(:post_a) { FactoryBot.create(:post) } #投稿を作成
     let(:post_params) { FactoryBot.attributes_for(:post) } #投稿のハッシュを作成
-    let(:invalid_post) { FactoryBot.attributes_for(:post, :invalid) } #無効な投稿
+    let(:invalid_post) { FactoryBot.attributes_for(:post, :invalid_title) } #無効な投稿のハッシュを作成
 
 
     describe "#new" do
@@ -114,6 +110,7 @@ RSpec.describe PostsController, type: :controller do
 
     let(:users_post) { FactoryBot.create(:post, user: user) } #ログインユーザーに所有されている投稿
     let(:update_params) { FactoryBot.attributes_for(:post, title: "更新後のタイトル") } #更新用の投稿を作成
+    let(:other_user) { FactoryBot.create(:user) } #別のユーザーを作成
     let(:other_users_post) { FactoryBot.create(:post, title: "更新前のタイトル", user: other_user,) } #他人に所有されている投稿を作成
 
     describe "#update" do

@@ -23,10 +23,9 @@ RSpec.describe "Posts", type: :request do
       context "有効な値の場合" do
 
         it "投稿を作成できること" do
-          # login_user
-          # expect {
-          #   post posts_path, params: { post: new_post }
-          # }.to change(user_a.posts, :count).by(1)      
+          expect {
+            post posts_path, params: { post: new_post }
+          }.to change(user_a.posts, :count).by(1)
         end
       end
 
